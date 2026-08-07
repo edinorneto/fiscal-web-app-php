@@ -1,32 +1,32 @@
-# 💼 Cadastro de Produtos & Consulta Fiscal para NF — PHP Web App
+# 💼 Cadastro Fiscal & Consulta Tributária — PHP Web App
 
-> **Disclaimer:** This project uses **synthetic (fictional) data** for learning purposes only. It is a technical exercise and **must not** be used for real tax calculation or compliance. Always consult a tax specialist.
-
-A PHP 8.x web application for product registration and fiscal consultation for invoice issuance (NF-e). The system allows registering products and automatically retrieving the correct tax data (ICMS, IPI, PIS, COFINS) based on the tax regime and destination region — all through a browser interface.
-
-This project is a web reimagining of a [previous terminal-based Python solution](https://github.com/edinorneto/cadastro-consulta), rebuilt in PHP/HTML/CSS to deepen back-end web fundamentals and reinforce separation of concerns in a multi-file architecture.
+> **Disclaimer:** This project uses **synthetic (fictional) tax rules and rates** for learning and portfolio purposes only. Do not use for real tax compliance. Always consult a tax specialist.
 
 ---
 
-## 🎯 Purpose
+## 🔗 Context: Evolution of a Python CLI Project
 
-This repository was built to practice **PHP fundamentals** in a realistic, multi-screen web context:
+This project is the **web evolution** of a previous terminal-based Python solution:
 
-- Control structures: `if/else`, `switch`, ternary operator `?:`
-- Operators: comparisons, arithmetic, and **null coalescing** `??`
-- Data persistence with **JSON** via `file_get_contents` / `file_put_contents`
-- Multi-file architecture with clear separation between UI, engine, and data layers
-- HTML forms, POST handling, and user input validation in PHP
-- Version control: Git & GitHub
+👉 **[cadastro-consulta](https://github.com/edinorneto/cadastro-consulta)** — the original Python CLI version
+
+The same fiscal domain (product registration + tax consultation for NF-e) was rebuilt from scratch in PHP as a multi-file web application, with a complete CRUD layer, browser interface, and a more explicit separation of concerns — demonstrating the transition from a functional CLI script to a structured web backend.
+
+**What changed architecturally:**
+
+| Python CLI | PHP Web App |
+|---|---|
+| Terminal input/output | Browser-based multi-screen interface |
+| Single-pass execution | Stateful request/response cycle |
+| JSON R/W via simple functions | Isolated data layer (`data.php`) |
+| Logic concentrated in modules | Process file per user action (`process_*.php`) |
+| No visual layer | Custom CSS design system (dark fintech theme) |
 
 ---
 
-## 🛠 Tech Stack
+## 🎯 What This Project Does
 
-- **PHP 8.x**
-- **HTML5 + CSS3** (custom design system, no frameworks)
-- **JSON** for persistent product storage
-- **Git & GitHub**
+A PHP 8.x web application for product registration and fiscal consultation oriented to invoice issuance (NF-e). The system allows registering products and automatically retrieving the correct tax data (ICMS, IPI, PIS, COFINS) based on the tax regime and destination region — entirely through a browser interface with no external frameworks.
 
 ---
 
@@ -34,28 +34,57 @@ This repository was built to practice **PHP fundamentals** in a realistic, multi
 
 ```
 ├── index.php               # Main menu: register or consult
-├── cadastro.php            # HTML form to register a new product
-├── process_cadastro.php    # Receives POST, validates and saves to JSON
-├── consulta.php            # Product selection, regime and region form
-├── process_consulta.php    # Crosses product + regime + region, returns fiscal data
-├── tax_rules.php           # Associative array with fictional tax rules (ICMS, IPI, PIS, COFINS)
-├── config.php              # Global constants (JSON file path, settings)
-├── data.php                # Read/write functions for JSON — isolated data layer
-├── style.css               # Full design system (dark fintech theme)
+├── cadastro.php            # HTML form — register a new product
+├── process_cadastro.php    # Receives POST, validates, saves to JSON
+├── produtos.php            # Product listing with edit/deactivate actions
+├── editar.php              # Edit form for existing products
+├── process_editar.php      # Handles product update
+├── process_apagar.php      # Handles product deletion
+├── process_status.php      # Toggles product active/inactive status
+├── consulta.php            # Product selection + regime and region form
+├── process_consulta.php    # Crosses product + regime + region → returns fiscal data
+├── tax_rules.php           # Associative array: fictional tax rules (ICMS, IPI, PIS, COFINS)
+├── config.php              # Global constants (JSON path, settings)
+├── data.php                # Isolated read/write functions for JSON persistence
+├── style.css               # Full design system (dark fintech theme, no frameworks)
 ├── cadastro_produtos.json  # Persistent product database (auto-generated)
-└── README.md               # Documentation
+└── screenshots/            # Visual documentation
 ```
+
 ---
 
-## 🧩 Business Rules (Simulation)
+## 🏗️ Architecture Decisions
 
-### 1. Product Registration
-- Collects: name, description, price, category, stock, unit, NCM (8 digits), active status
-- Auto-generates: sequential ID, registration timestamp (America/Sao_Paulo)
-- Persists data to `cadastro_produtos.json` via `file_put_contents`
+**Process-per-action pattern:** Each user action has its own `process_*.php` file responsible for receiving POST data, validating input, executing the business logic, and redirecting. This mirrors a controller-like responsibility without relying on a framework — making the request flow explicit and traceable.
 
-### 2. Fiscal Consultation
-- User selects a registered product, a tax regime and a destination region
+**Isolated data layer:** `data.php` is the only file that reads or writes to `cadastro_produtos.json`. No other file touches persistence directly — any change to the storage format is contained in a single place.
+
+**Rule engine as data:** `tax_rules.php` exposes an associative array keyed by `[regime][region]`. Adding a new fiscal rule means extending the array without modifying the consultation logic — open for extension, closed for modification.
+
+---
+
+## 🛠 Tech Stack
+
+- **PHP 8.x**
+- **HTML5 + CSS3** (custom design system — no frameworks)
+- **JSON** — product persistence
+- **Git & GitHub** — version control (32 commits)
+
+---
+
+## 🧩 Business Rules (Fictional Simulation)
+
+### Product Registration (Full CRUD)
+
+- **Create:** name, description, price, category, stock, unit, NCM (8 digits), active status
+- **Read:** paginated product list with status indicator
+- **Update:** editable fields with re-validation
+- **Delete / Toggle status:** soft deactivation or permanent removal
+- Auto-generated: sequential ID, registration timestamp (America/Sao_Paulo)
+
+### Fiscal Consultation (Tax Rule Engine)
+
+- User selects: product + tax regime + destination region
 - System crosses this data against `tax_rules.php` to retrieve:
   - **CFOP** — Fiscal Operation Code
   - **CST** — Tax Situation Code
@@ -63,15 +92,15 @@ This repository was built to practice **PHP fundamentals** in a realistic, multi
   - **Tax rates:** ICMS, IPI, PIS, COFINS
   - **Legal description** of the applied rule
 
-### 3. Tax Regimes (Fictional)
+### Tax Regimes (Fictional)
+
 - **Convênio XX** — simulates exemption (internal) and base reduction (interstate)
 - **TTD XX** — simulates deferral for all destinations
 
-### 4. Destination Regions
+### Destination Regions
+
 - Internal: SC
 - Interstate: PR, RS, MT, MS
-
-> Note: All rates and rules are intentionally simplified and fictional.
 
 ---
 
@@ -84,51 +113,44 @@ This repository was built to practice **PHP fundamentals** in a realistic, multi
 
 ## 🚀 Getting Started
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/edinorneto/tax-rule-php.git
-   cd tax-rule-php
-   ```
+```bash
+git clone https://github.com/edinorneto/tax-rule-php.git
+cd tax-rule-php
+php -S localhost:8000
+```
 
-2. **Run with PHP built-in server**
-   ```bash
-   php -S localhost:8000
-   ```
-
-3. **Open in your browser**
-   ```
-   http://localhost:8000
-   ```
-
-4. **Use the menu to:**
-   - Register a new product (name, NCM, price, stock, etc.)
-   - Consult fiscal data for an invoice — select product, regime and destination
+Open `http://localhost:8000` in your browser.
 
 ---
 
 ## 🧪 Example Flow
 
-1. Register a product:
-   - Name: `Ureia Agrícola`
-   - NCM: `31021010`
-   - Price: `R$ 1500,00` | Stock: `1000 kg`
+1. **Register a product:**
+   - Name: `Ureia Agrícola` | NCM: `31021010` | Price: R$ 1.500,00 | Stock: 1000 kg
 
-2. Consult for invoice:
-   - Product: `Ureia Agrícola`
-   - Regime: `Convênio XX`
-   - Destination: `Externa / PR`
+2. **Consult for invoice:**
+   - Product: `Ureia Agrícola` | Regime: `Convênio XX` | Destination: `PR`
 
-3. System returns:
-   ```
-   CFOP:       6102 – Venda interestadual nacional
-   CST:        7 - Importada sem similar nacional
-   Cód. Trib.: 020
-   ICMS:       6,0%  |  IPI: 0%  |  PIS: 0%  |  COFINS: 0%
-   ```
+3. **System returns:**
+
+```
+CFOP:       6102 – Venda interestadual nacional
+CST:        7 – Importada sem similar nacional
+Cód. Trib.: 020
+ICMS: 6,0%  |  IPI: 0%  |  PIS: 0%  |  COFINS: 0%
+```
+
+---
+
+## 🧠 Concepts Applied
+
+`PHP 8.x` · `HTML5` · `CSS3` · `CRUD Design` · `Rule Engine` · `Multi-file Architecture` · `Separation of Concerns` · `Process-per-action Pattern` · `JSON Persistence` · `Null Coalescing ??` · `Git & GitHub`
 
 ---
 
 ## 👨‍💻 Author
 
 **Edinor de Souza Neto**
-LinkedIn: https://www.linkedin.com/in/edinor-de-souza-neto/
+[LinkedIn](https://www.linkedin.com/in/edinor-de-souza-neto/) · [GitHub](https://github.com/edinorneto)
+
+See the origin of this project: [cadastro-consulta](https://github.com/edinorneto/cadastro-consulta) (Python CLI version)
