@@ -1,5 +1,4 @@
 <?php
-
 require_once 'config.php';
 require_once 'data.php';
 
@@ -16,11 +15,10 @@ $ncm = trim($_POST['ncm'] ?? '');
 $preco = trim($_POST['preco'] ?? '');
 $estoque = trim($_POST['estoque'] ?? '');
 $un = trim($_POST['unidade'] ?? '');
-$ativo = trim((string)($_POST['ativo'] ?? '1')); // '1' ou '0' // 1=Ativo, 0=Inativo
+$ativo = trim((string)($_POST['ativo'] ?? '1'));
 
 $erros = [];
 
-// validações básicas
 if (empty($nome)) {
     $erros[] = "Nome é obrigatório.";
 }
@@ -33,12 +31,11 @@ if (strlen($ncm) !== 8 || !ctype_digit($ncm)) {
     $erros[] = 'NCM inválido: deve conter exatamente 8 dígitos.';
 }
 
-if (!is_numeric($preco) || floatval($preco) <= 0) {
+if (!is_numeric($preco) || floatval(str_replace(',', '.', $preco)) <= 0) {
     $erros[] = 'Preço inválido.';
 }
 
-// estoque pode ser 0 (comum), mas não pode ser negativo
-if (!is_numeric($estoque) || floatval($estoque) < 0) {
+if (!is_numeric($estoque) || floatval(str_replace(',', '.', $estoque)) < 0) {
     $erros[] = 'Estoque inválido.';
 }
 
@@ -55,8 +52,8 @@ if (empty($erros)) {
 
     $ultimo_id = 0;
     foreach ($produtos as $p) {
-        if (isset($p['id']) && $p['id'] > $ultimo_id) {
-            $ultimo_id = $p['id'];
+        if (isset($p['id']) && (int)$p['id'] > $ultimo_id) {
+            $ultimo_id = (int)$p['id'];
         }
     }
 
@@ -68,8 +65,8 @@ if (empty($erros)) {
         'descricao' => $descricao,
         'categoria' => $categoria,
         'ncm' => $ncm,
-        'preco' => floatval($preco),
-        'estoque' => floatval($estoque),
+        'preco' => floatval(str_replace(',', '.', $preco)),
+        'estoque' => floatval(str_replace(',', '.', $estoque)),
         'unidade' => $un,
         'ativo' => (int)$ativo,
         'data_cadastro' => date('d/m/Y H:i'),
@@ -77,9 +74,15 @@ if (empty($erros)) {
 
     $produtos[] = $novo_produto;
 
-    salvar_produtos(ARQUIVO_JSON, $produtos);
-}
+    $salvou = salvar_produtos(ARQUIVO_JSON, $produtos);
 
+    if ($salvou) {
+        header('Location: produtos.php?status=created');
+        exit;
+    } else {
+        $erros[] = 'Falha ao salvar o produto. Verifique permissões do arquivo.';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
