@@ -1,11 +1,9 @@
-<?php 
+<?php
 require_once 'data.php';
 require_once 'config.php';
 
 $produtos = carregar_produtos(ARQUIVO_JSON);
-
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,7 +17,7 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
         <section class="card">
             <header class="card-header">
                 <h1>Lista de Produtos</h1>
-                <a href="produto-form.php" class="btn btn-primary">Novo Produto</a>
+                <a href="cadastro.php" class="btn btn-primary">Novo Produto</a>
             </header>
 
             <div class="table-wrapper">
@@ -39,16 +37,16 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
                         <?php if (!empty($produtos)) { ?>
                             <?php foreach ($produtos as $item) { ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($item['nome'] ?? '') ?></td>
-                                    <td><?= htmlspecialchars($item['categoria'] ?? '') ?></td>
-                                    <td><?= htmlspecialchars($item['ncm'] ?? '') ?></td>
-                                    <td>R$ <?= number_format((float)($item['preco'] ?? 0), 2, ',', '.') ?></td>
-                                    <td><?= htmlspecialchars(number_format((float)($item['estoque'] ?? 0), 2, ",", ".")) ?></td>
+                                    <td><?= htmlspecialchars($item['nome'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td><?= htmlspecialchars($item['categoria'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td><?= htmlspecialchars($item['ncm'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td>R$ <?= htmlspecialchars(number_format((float)($item['preco'] ?? 0), 2, ',', '.'), ENT_QUOTES, 'UTF-8') ?></td>
+                                    <td><?= htmlspecialchars(number_format((float)($item['estoque'] ?? 0), 2, ",", "."), ENT_QUOTES, 'UTF-8') ?></td>
                                     <?php $ativo = !empty($item['ativo']); ?>
                                     <td><?= $ativo ? 'Ativo' : 'Inativo' ?></td>
                                     <td>
-                                        <a href="produto-form.php?id=<?= urlencode((string)($item['id'] ?? '')) ?>">Editar</a>
-                                        <form action="produto-status.php" method="post" style="display:inline;">
+                                        <a href="editar.php?id=<?= urlencode((string)($item['id'] ?? '')) ?>">Editar</a>
+                                        <form action="process_status.php" method="post" style="display:inline;">
                                             <input type="hidden" name="id" value="<?= htmlspecialchars((string)($item['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                                             <button type="submit" onclick="return confirm('Tem certeza que deseja alterar o status deste produto?');"><?= $ativo ? 'Inativar' : 'Ativar' ?></button>
                                         </form>
