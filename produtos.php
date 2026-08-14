@@ -3,6 +3,16 @@ require_once 'data.php';
 require_once 'config.php';
 
 $produtos = carregar_produtos(ARQUIVO_JSON);
+
+$status = $_GET['status'] ?? '';
+$flashHtml = '';
+if ($status === 'created') {
+    $flashHtml = '<div class="alert alert-success"><span class="alert-icon">✓</span> Produto cadastrado com sucesso!</div>';
+} elseif ($status === 'updated') {
+    $flashHtml = '<div class="alert alert-success"><span class="alert-icon">✓</span> Produto atualizado com sucesso!</div>';
+} elseif ($status === 'deleted') {
+    $flashHtml = '<div class="alert alert-success"><span class="alert-icon">✓</span> Produto apagado com sucesso!</div>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -14,6 +24,9 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
 </head>
 <body>
     <main class="container">
+        <?php if ($flashHtml !== ''): ?>
+            <?php echo $flashHtml; ?>
+        <?php endif; ?>
         <section class="card">
             <header class="card-header">
                 <h1>Lista de Produtos</h1>
