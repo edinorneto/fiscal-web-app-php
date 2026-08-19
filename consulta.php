@@ -62,7 +62,7 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
                     </select>
                 </div>
 
-                <div class="form-group" id="grupo-estado" style="display:none;">
+                <div class="form-group" id="grupo-estado">
                     <label>Estado de destino <span class="hint">Somente para venda externa</span></label>
                     <select name="estado" id="sel-estado">
                         <option value="" disabled selected>Selecione o estado</option>

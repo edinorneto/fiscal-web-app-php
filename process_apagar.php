@@ -36,7 +36,6 @@ if (empty($erros)) {
 </head>
 <body>
 
-<?php if (!empty($erros)): ?>
     <div class="alert alert-error">
         <span class="alert-icon">✗</span>
         <div>
@@ -46,7 +45,6 @@ if (empty($erros)) {
         </div>
     </div>
     <a href="produtos.php" class="btn-secondary">← Voltar</a>
-<?php endif; ?>
 
 </body>
 </html>
