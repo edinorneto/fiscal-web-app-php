@@ -8,14 +8,14 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     exit;
 }
 
-$nome = trim($_POST['nome'] ?? '');
+$nome      = trim($_POST['nome']      ?? '');
 $descricao = trim($_POST['descricao'] ?? '');
 $categoria = trim($_POST['categoria'] ?? '');
-$ncm = trim($_POST['ncm'] ?? '');
-$preco = trim($_POST['preco'] ?? '');
-$estoque = trim($_POST['estoque'] ?? '');
-$un = trim($_POST['unidade'] ?? '');
-$ativo = trim((string)($_POST['ativo'] ?? '1'));
+$ncm       = trim($_POST['ncm']       ?? '');
+$preco     = trim($_POST['preco']     ?? '');
+$estoque   = trim($_POST['estoque']   ?? '');
+$un        = trim($_POST['unidade']   ?? '');
+$ativo     = trim((string)($_POST['ativo'] ?? '1'));
 
 $erros = [];
 
@@ -48,40 +48,37 @@ if ($ativo !== '0' && $ativo !== '1') {
 }
 
 if (empty($erros)) {
-    $produtos = carregar_produtos(ARQUIVO_JSON);
+    $produtos   = carregar_produtos(ARQUIVO_JSON);
+    $ultimo_id  = 0;
 
-    $ultimo_id = 0;
     foreach ($produtos as $p) {
         if (isset($p['id']) && (int)$p['id'] > $ultimo_id) {
             $ultimo_id = (int)$p['id'];
         }
     }
 
-    $proximo_id = $ultimo_id + 1;
-
     $novo_produto = [
-        'id' => $proximo_id,
-        'nome' => $nome,
-        'descricao' => $descricao,
-        'categoria' => $categoria,
-        'ncm' => $ncm,
-        'preco' => floatval(str_replace(',', '.', $preco)),
-        'estoque' => floatval(str_replace(',', '.', $estoque)),
-        'unidade' => $un,
-        'ativo' => (int)$ativo,
-        'data_cadastro' => date('d/m/Y H:i'),
+        'id'           => $ultimo_id + 1,
+        'nome'         => $nome,
+        'descricao'    => $descricao,
+        'categoria'    => $categoria,
+        'ncm'          => $ncm,
+        'preco'        => floatval(str_replace(',', '.', $preco)),
+        'estoque'      => floatval(str_replace(',', '.', $estoque)),
+        'unidade'      => $un,
+        'ativo'        => (int)$ativo,
+        'data_cadastro'=> date('d/m/Y H:i'),
     ];
 
     $produtos[] = $novo_produto;
-
-    $salvou = salvar_produtos(ARQUIVO_JSON, $produtos);
+    $salvou     = salvar_produtos(ARQUIVO_JSON, $produtos);
 
     if ($salvou) {
         header('Location: produtos.php?status=created');
         exit;
-    } else {
-        $erros[] = 'Falha ao salvar o produto. Verifique permissões do arquivo.';
     }
+
+    $erros[] = 'Falha ao salvar o produto. Verifique permissões do arquivo.';
 }
 ?>
 <!DOCTYPE html>
@@ -94,15 +91,7 @@ if (empty($erros)) {
 </head>
 <body>
 
-<?php if (empty($erros)): ?>
-    <div class="alert alert-success">
-        <span class="alert-icon">✓</span>
-        <div>Produto cadastrado com sucesso!</div>
-        <a href="cadastro.php" class="btn-secondary">+ Novo cadastro</a>
-        <a href="index.php" class="btn-primary">Menu principal →</a>
-    </div>
-
-<?php else: ?>
+<?php if (!empty($erros)): ?>
     <div class="alert alert-error">
         <span class="alert-icon">✗</span>
         <div>
@@ -112,7 +101,6 @@ if (empty($erros)) {
         </div>
     </div>
     <a href="cadastro.php" class="btn-secondary">← Voltar e corrigir</a>
-
 <?php endif; ?>
 
 </body>

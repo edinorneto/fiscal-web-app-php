@@ -8,15 +8,15 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     exit;
 }
 
-$id = trim($_POST['id'] ?? '');
-$nome = trim($_POST['nome'] ?? '');
+$id        = trim($_POST['id']        ?? '');
+$nome      = trim($_POST['nome']      ?? '');
 $descricao = trim($_POST['descricao'] ?? '');
 $categoria = trim($_POST['categoria'] ?? '');
-$ncm = trim($_POST['ncm'] ?? '');
-$preco = trim($_POST['preco'] ?? '');
-$estoque = trim($_POST['estoque'] ?? '');
-$un = trim($_POST['unidade'] ?? '');
-$ativo = trim((string)($_POST['ativo'] ?? '1'));
+$ncm       = trim($_POST['ncm']       ?? '');
+$preco     = trim($_POST['preco']     ?? '');
+$estoque   = trim($_POST['estoque']   ?? '');
+$un        = trim($_POST['unidade']   ?? '');
+$ativo     = trim((string)($_POST['ativo'] ?? '1'));
 
 $erros = [];
 
@@ -54,14 +54,14 @@ if ($ativo !== '0' && $ativo !== '1') {
 
 if (empty($erros)) {
     $novos_dados = [
-        'nome' => $nome,
+        'nome'      => $nome,
         'descricao' => $descricao,
         'categoria' => $categoria,
-        'ncm' => $ncm,
-        'preco' => floatval(str_replace(',', '.', $preco)),
-        'estoque' => floatval(str_replace(',', '.', $estoque)),
-        'unidade' => $un,
-        'ativo' => (int)$ativo,
+        'ncm'       => $ncm,
+        'preco'     => floatval(str_replace(',', '.', $preco)),
+        'estoque'   => floatval(str_replace(',', '.', $estoque)),
+        'unidade'   => $un,
+        'ativo'     => (int)$ativo,
     ];
 
     $resultado = atualizar_produto(ARQUIVO_JSON, (int)$id, $novos_dados);
@@ -69,9 +69,9 @@ if (empty($erros)) {
     if ($resultado !== false) {
         header('Location: produtos.php?status=updated');
         exit;
-    } else {
-        $erros[] = 'Produto não encontrado ou falha ao salvar. Verifique permissões do arquivo.';
     }
+
+    $erros[] = 'Produto não encontrado ou falha ao salvar. Verifique permissões do arquivo.';
 }
 ?>
 <!DOCTYPE html>
@@ -84,15 +84,7 @@ if (empty($erros)) {
 </head>
 <body>
 
-<?php if (empty($erros)): ?>
-    <div class="alert alert-success">
-        <span class="alert-icon">✓</span>
-        <div>Produto atualizado com sucesso!</div>
-        <a href="produtos.php" class="btn-secondary">Voltar à lista</a>
-        <a href="index.php" class="btn-primary">Menu principal →</a>
-    </div>
-
-<?php else: ?>
+<?php if (!empty($erros)): ?>
     <div class="alert alert-error">
         <span class="alert-icon">✗</span>
         <div>

@@ -55,16 +55,16 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
 
                 <div class="form-group">
                     <label>Tipo de venda <span class="req">*</span></label>
-                    <select name="regiao" required>
+                    <select name="regiao" id="sel-regiao" required>
                         <option value="" disabled selected>Selecione</option>
                         <option value="interna/sc">Interna (SC)</option>
                         <option value="externa">Externa</option>
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" id="grupo-estado" style="display:none;">
                     <label>Estado de destino <span class="hint">Somente para venda externa</span></label>
-                    <select name="estado">
+                    <select name="estado" id="sel-estado">
                         <option value="" disabled selected>Selecione o estado</option>
                         <option value="pr">PR</option>
                         <option value="rs">RS</option>
@@ -85,6 +85,22 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
     <footer class="page-footer">
         Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank">Edinor de Souza Neto</a> · PHP
     </footer>
+
+    <script>
+        const regiaoSel  = document.getElementById('sel-regiao');
+        const grupoEstado = document.getElementById('grupo-estado');
+        const estadoSel  = document.getElementById('sel-estado');
+
+        function syncEstado() {
+            const externo = regiaoSel.value === 'externa';
+            grupoEstado.style.display = externo ? '' : 'none';
+            estadoSel.required        = externo;
+            if (!externo) estadoSel.value = '';
+        }
+
+        regiaoSel.addEventListener('change', syncEstado);
+        syncEstado(); // estado inicial correto sem interação
+    </script>
 
 </body>
 </html>
