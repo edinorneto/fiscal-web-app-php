@@ -63,21 +63,12 @@ A PHP 8.x web application for product registration and fiscal consultation orien
 
 ---
 
-## 🛠 Tech Stack
-
-- **PHP 8.x**
-- **HTML5 + CSS3** (custom design system — no frameworks)
-- **JSON** — product persistence
-- **Git & GitHub** — version control (32 commits)
-
----
-
-## 🧩 Business Rules (Fictional Simulation)
+## 🎯 Business Rules (Fictional Simulation)
 
 ### Product Registration (Full CRUD)
 
 - **Create:** name, description, price, category, stock, unit, NCM (8 digits), active status
-- **Read:** paginated product list with status indicator
+- **Read:** product list with status indicator and action buttons
 - **Update:** editable fields with re-validation
 - **Delete / Toggle status:** soft deactivation or permanent removal
 - Auto-generated: sequential ID, registration timestamp (America/Sao_Paulo)

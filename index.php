@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <header class="page-header">
+    <header class="page-header-wide">
         <div class="eyebrow">Simulador Fiscal · PHP</div>
         <h1>Cadastro Fiscal <span>PHP</span></h1>
         <p class="subtitle">
@@ -16,9 +16,9 @@
             Dados sintéticos — somente para fins educacionais.
         </p>
     </header>
-    
-    <main class="menu-grid">
-        
+
+    <main class="menu-grid-3">
+
         <a href="cadastro.php" class="menu-card">
             <div>
                 <span class="menu-card-icon">📦</span>
@@ -52,7 +52,7 @@
             <div class="menu-card-arrow">Acessar &rarr;</div>
         </a>
 
-    </main>  
+    </main>
 
     <footer class="page-footer">
         <p>Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank">Edinor de Souza Neto</a> · PHP 8.x</p>

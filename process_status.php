@@ -8,7 +8,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     exit;
 }
 
-$id = trim($_POST['id'] ?? '');
+$id    = trim($_POST['id'] ?? '');
 $erros = [];
 
 if ($id === '' || !ctype_digit($id)) {
@@ -21,9 +21,9 @@ if (empty($erros)) {
     if ($resultado !== false) {
         header('Location: produtos.php?status=updated');
         exit;
-    } else {
-        $erros[] = 'Produto não encontrado ou falha ao atualizar status. Verifique permissões do arquivo.';
     }
+
+    $erros[] = 'Produto não encontrado ou falha ao atualizar status. Verifique permissões do arquivo.';
 }
 ?>
 <!DOCTYPE html>
@@ -36,14 +36,7 @@ if (empty($erros)) {
 </head>
 <body>
 
-<?php if (empty($erros)): ?>
-    <div class="alert alert-success">
-        <span class="alert-icon">✓</span>
-        <div>Status alterado com sucesso!</div>
-        <a href="produtos.php" class="btn-secondary">Voltar à lista</a>
-        <a href="index.php" class="btn-primary">Menu principal →</a>
-    </div>
-<?php else: ?>
+<?php if (!empty($erros)): ?>
     <div class="alert alert-error">
         <span class="alert-icon">✗</span>
         <div>
