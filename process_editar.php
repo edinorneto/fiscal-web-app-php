@@ -15,6 +15,8 @@ $categoria = trim($_POST['categoria'] ?? '');
 $ncm       = trim($_POST['ncm']       ?? '');
 $preco     = trim($_POST['preco']     ?? '');
 $estoque   = trim($_POST['estoque']   ?? '');
+$preco_normalizado   = str_replace(',', '.', $preco);
+$estoque_normalizado = str_replace(',', '.', $estoque);
 $un        = trim($_POST['unidade']   ?? '');
 $ativo     = trim((string)($_POST['ativo'] ?? '1'));
 
@@ -36,11 +38,11 @@ if (strlen($ncm) !== 8 || !ctype_digit($ncm)) {
     $erros[] = 'NCM inválido: deve conter exatamente 8 dígitos.';
 }
 
-if (!is_numeric($preco) || floatval(str_replace(',', '.', $preco)) <= 0) {
+if (!is_numeric($preco_normalizado) || (float)$preco_normalizado <= 0) {
     $erros[] = 'Preço inválido.';
 }
 
-if (!is_numeric($estoque) || floatval(str_replace(',', '.', $estoque)) < 0) {
+if (!is_numeric($estoque_normalizado) || (float)$estoque_normalizado < 0) {
     $erros[] = 'Estoque inválido.';
 }
 
@@ -58,8 +60,8 @@ if (empty($erros)) {
         'descricao' => $descricao,
         'categoria' => $categoria,
         'ncm'       => $ncm,
-        'preco'     => floatval(str_replace(',', '.', $preco)),
-        'estoque'   => floatval(str_replace(',', '.', $estoque)),
+        'preco'     => (float)$preco_normalizado,
+        'estoque'   => (float)$estoque_normalizado,
         'unidade'   => $un,
         'ativo'     => (int)$ativo,
     ];

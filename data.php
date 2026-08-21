@@ -123,6 +123,12 @@ function atualizar_produto($arquivo, $id, $novos_dados) {
 
             foreach ($novos_dados as $campo => $valor) {
                 if ($campo === 'id' || $campo === 'data_cadastro') continue;
+
+                if ($campo === 'descricao') {
+                    $produto_atualizado[$campo] = trim((string)$valor);
+                    continue;
+                }
+
                 if (trim((string)$valor) === '') continue;
 
                 if ($campo === 'preco' || $campo === 'estoque') {

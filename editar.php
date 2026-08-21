@@ -2,13 +2,18 @@
 require_once 'data.php';
 require_once 'config.php';
 
-$id = $_GET['id'] ?? '';
+$id = trim((string)($_GET['id'] ?? ''));
+
+if ($id === '' || !ctype_digit($id)) {
+    header('Location: produtos.php');
+    exit;
+}
 
 $produtos = carregar_produtos(ARQUIVO_JSON);
 $produto = null;
 
 foreach ($produtos as $item) {
-    if ($id == $item['id']) {
+    if ((int)$id === (int)($item['id'] ?? 0)) {
         $produto = $item;
         break;
     }
@@ -47,17 +52,17 @@ $ativo = !empty($produto['ativo']);
 
         <div class="card-body">
             <form action="process_editar.php" method="post">
-                <input type="hidden" name="id" value="<?= htmlspecialchars((string)($produto['id'] ?? '')) ?>">
+                <input type="hidden" name="id" value="<?= htmlspecialchars((string)($produto['id'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
 
                 <div class="form-group">
                     <label for="nome">Nome do produto <span class="req">*</span></label>
                     <input type="text" id="nome" name="nome" placeholder="Ex: Ureia Agrícola" required
-                           value="<?= htmlspecialchars($produto['nome'] ?? '') ?>">
+                           value="<?= htmlspecialchars((string)($produto['nome'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
-                    <textarea id="descricao" name="descricao" placeholder="Breve descrição do produto..."><?= htmlspecialchars($produto['descricao'] ?? '') ?></textarea>
+                    <textarea id="descricao" name="descricao" placeholder="Breve descrição do produto..."><?= htmlspecialchars((string)($produto['descricao'] ?? ''), ENT_QUOTES, 'UTF-8') ?></textarea>
                 </div>
 
                 <div class="form-row">
@@ -75,7 +80,7 @@ $ativo = !empty($produto['ativo']);
                     <div class="form-group">
                         <label for="ncm">NCM <span class="req">*</span> <span class="hint">8 dígitos</span></label>
                         <input type="text" id="ncm" name="ncm" placeholder="00000000" maxlength="8" required
-                               value="<?= htmlspecialchars($produto['ncm'] ?? '') ?>">
+                               value="<?= htmlspecialchars((string)($produto['ncm'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                     </div>
                 </div>
 
@@ -85,14 +90,14 @@ $ativo = !empty($produto['ativo']);
                         <div class="input-wrapper">
                             <span class="prefix">R$</span>
                             <input type="number" id="preco" name="preco" placeholder="0,00" min="0" step="0.01" required
-                                   value="<?= htmlspecialchars((string)($produto['preco'] ?? '')) ?>">
+                                   value="<?= htmlspecialchars((string)($produto['preco'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="estoque">Estoque <span class="req">*</span></label>
                         <input type="number" id="estoque" name="estoque" placeholder="0" min="0" step="0.01" required
-                               value="<?= htmlspecialchars((string)($produto['estoque'] ?? '')) ?>">
+                               value="<?= htmlspecialchars((string)($produto['estoque'] ?? ''), ENT_QUOTES, 'UTF-8') ?>">
                     </div>
 
                     <div class="form-group">

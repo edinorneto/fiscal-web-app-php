@@ -27,7 +27,7 @@
                     Registre nome, NCM, preço, estoque e categoria. Os dados ficam salvos em JSON.
                 </p>
             </div>
-            <div class="menu-card-arrow">Acessar &rarr;</div>
+            <div class="menu-card-arrow">Acessar →</div>
         </a>
 
         <a href="consulta.php" class="menu-card">
@@ -38,7 +38,7 @@
                     Selecione o produto, regime tributário e destino para obter os dados da NF-e.
                 </p>
             </div>
-            <div class="menu-card-arrow">Acessar &rarr;</div>
+            <div class="menu-card-arrow">Acessar →</div>
         </a>
 
         <a href="produtos.php" class="menu-card">
@@ -49,13 +49,13 @@
                     Visualize a lista, edite, ative/inative e apague produtos cadastrados.
                 </p>
             </div>
-            <div class="menu-card-arrow">Acessar &rarr;</div>
+            <div class="menu-card-arrow">Acessar →</div>
         </a>
 
     </main>
 
     <footer class="page-footer">
-        <p>Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank">Edinor de Souza Neto</a> · PHP 8.x</p>
+        <p>Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank" rel="noopener noreferrer">Edinor de Souza Neto</a> · PHP 8.x</p>
     </footer>
 
 </body>

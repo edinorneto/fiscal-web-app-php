@@ -123,7 +123,7 @@ $status   = $_GET['status'] ?? '';
     </div>
 
     <footer class="page-footer">
-        Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank">Edinor de Souza Neto</a> · PHP
+        Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank" rel="noopener noreferrer">Edinor de Souza Neto</a> · PHP
     </footer>
 
 </body>
