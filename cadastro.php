@@ -12,7 +12,6 @@
         <div class="eyebrow">Novo produto</div>
         <h1>Cadastrar <span>Produto</span></h1>
     </div>
-
     <div class="card">
         <div class="card-header">
             <div class="card-header-left">
@@ -20,20 +19,16 @@
                 <h2>Dados do Produto</h2>
             </div>
         </div>
-
         <div class="card-body">
             <form action="process_cadastro.php" method="post">
-
                 <div class="form-group">
                     <label for="nome">Nome do produto <span class="req">*</span></label>
                     <input type="text" id="nome" name="nome" placeholder="Ex: Ureia Agrícola" required>
                 </div>
-
                 <div class="form-group">
                     <label for="descricao">Descrição</label>
                     <textarea id="descricao" name="descricao" placeholder="Breve descrição do produto..."></textarea>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="categoria">Categoria <span class="req">*</span></label>
@@ -50,7 +45,6 @@
                         <input type="text" id="ncm" name="ncm" placeholder="00000000" maxlength="8" required>
                     </div>
                 </div>
-
                 <div class="form-row-3">
                     <div class="form-group">
                         <label for="preco">Preço unit. <span class="req">*</span></label>
@@ -61,7 +55,7 @@
                     </div>
                     <div class="form-group">
                         <label for="estoque">Estoque <span class="req">*</span></label>
-                        <input type="number" id="estoque" name="estoque" placeholder="0" min="0" required>
+                        <input type="number" id="estoque" name="estoque" placeholder="0" min="0" step="0.01" required>
                     </div>
                     <div class="form-group">
                         <label for="unidade">Unidade <span class="req">*</span></label>
@@ -74,13 +68,11 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="section-divider">
                     <div class="section-divider-line"></div>
                     <div class="section-divider-label">Status</div>
                     <div class="section-divider-line"></div>
                 </div>
-
                 <div class="form-group">
                     <label>Produto ativo? <span class="req">*</span></label>
                     <div class="toggle-group">
@@ -94,16 +86,13 @@
                         </label>
                     </div>
                 </div>
-
                 <div class="btn-row">
                     <a href="index.php" class="btn-secondary">Cancelar</a>
                     <button type="submit" class="btn-primary">Salvar produto →</button>
                 </div>
-
             </form>
         </div>
     </div>
-
     <footer class="page-footer">
         Projeto de estudo · <a href="https://linkedin.com/in/edinor-de-souza-neto">Edinor de Souza Neto</a> · PHP
     </footer>
