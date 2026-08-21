@@ -2,7 +2,10 @@
 require_once 'data.php';
 require_once 'config.php';
 
-$produtos = carregar_produtos(ARQUIVO_JSON);
+$produtos = array_values(array_filter(
+    carregar_produtos(ARQUIVO_JSON),
+    fn($produto) => !empty($produto['ativo'])
+));
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +86,7 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
     </div>
 
     <footer class="page-footer">
-        Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank">Edinor de Souza Neto</a> · PHP
+        Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank" rel="noopener noreferrer">Edinor de Souza Neto</a> · PHP
     </footer>
 
     <script>

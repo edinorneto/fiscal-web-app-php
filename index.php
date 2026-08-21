@@ -55,7 +55,7 @@
     </main>
 
     <footer class="page-footer">
-        <p>Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank">Edinor de Souza Neto</a> · PHP 8.x</p>
+        <p>Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank" rel="noopener noreferrer">Edinor de Souza Neto</a> · PHP 8.x</p>
     </footer>
 
 </body>

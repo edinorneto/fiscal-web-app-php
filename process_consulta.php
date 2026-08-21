@@ -9,25 +9,32 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     exit;
 }
 
-$produto_id = $_POST['produto'] ?? "";
-$regime = $_POST['regime'] ?? "";
-$regiao = $_POST['regiao'] ?? "";
-$estado = $_POST['estado'] ?? "";
+$produto_id = trim((string)($_POST['produto'] ?? ""));
+$regime = trim((string)($_POST['regime'] ?? ""));
+$regiao = trim((string)($_POST['regiao'] ?? ""));
+$estado = trim((string)($_POST['estado'] ?? ""));
 
 $erros = [];
 
 // validações mínimas
-if ($produto_id === "") {
-    $erros[] = "Selecione um produto.";
+if ($produto_id === "" || !ctype_digit($produto_id)) {
+    $erros[] = "Selecione um produto válido.";
 }
 if ($regime === "") {
     $erros[] = "Selecione um regime.";
 }
 if ($regiao === "") {
     $erros[] = "Selecione o tipo de venda.";
+} elseif (!in_array($regiao, ['interna/sc', 'externa'], true)) {
+    $erros[] = "Tipo de venda inválido.";
 }
-if ($regiao === "externa" && $estado === "") {
-    $erros[] = "Selecione o estado de destino para venda externa.";
+
+if ($regiao === "externa") {
+    if ($estado === "") {
+        $erros[] = "Selecione o estado de destino para venda externa.";
+    } elseif (!in_array($estado, ['pr', 'rs', 'mt', 'ms'], true)) {
+        $erros[] = "Estado de destino inválido.";
+    }
 }
 
 $regiao_chave = ($regiao === 'externa') ? ($regiao . "/" . $estado) : $regiao;
@@ -50,7 +57,7 @@ $produtos = carregar_produtos(ARQUIVO_JSON);
 $produto_selecionado = null;
 
 foreach ($produtos as $p) {
-    if (($p['id'] ?? null) == $produto_id) {
+    if ((int)($p['id'] ?? 0) === (int)$produto_id) {
         $produto_selecionado = $p;
         break;
     }
@@ -58,6 +65,8 @@ foreach ($produtos as $p) {
 
 if ($produto_selecionado === null) {
     $erros[] = "Produto não encontrado.";
+} elseif (empty($produto_selecionado['ativo'])) {
+    $erros[] = "Produto inativo não pode ser consultado.";
 }
 
 // defaults
@@ -202,7 +211,7 @@ $descricao = $resultado['descricao'] ?? '-';
 <?php endif; ?>
 
     <footer class="page-footer">
-        Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank">Edinor de Souza Neto</a> · PHP
+        Projeto de estudo · <a href="https://www.linkedin.com/in/edinor-de-souza-neto/" target="_blank" rel="noopener noreferrer">Edinor de Souza Neto</a> · PHP
     </footer>
 
 </body>
