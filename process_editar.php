@@ -30,8 +30,24 @@ if (empty($nome)) {
     $erros[] = 'Nome é obrigatório.';
 }
 
+$categorias_validas = [
+    'Fertilizante',
+    'Defensivo',
+    'Semente',
+    'Insumo'
+];
+
+$unidades_validas = [
+    'kg',
+    'T',
+    'un',
+    'L'
+];
+
 if (empty($categoria)) {
     $erros[] = 'Categoria é obrigatória.';
+} elseif (!in_array($categoria, $categorias_validas, true)) {
+    $erros[] = 'Categoria inválida.';
 }
 
 if (strlen($ncm) !== 8 || !ctype_digit($ncm)) {
@@ -48,6 +64,8 @@ if (!is_numeric($estoque_normalizado) || (float)$estoque_normalizado < 0) {
 
 if (empty($un)) {
     $erros[] = 'Unidade é obrigatória.';
+} elseif (!in_array($un, $unidades_validas, true)) {
+    $erros[] = 'Unidade inválida.';
 }
 
 if ($ativo !== '0' && $ativo !== '1') {
@@ -86,6 +104,7 @@ if (empty($erros)) {
 </head>
 <body>
 
+<?php if (!empty($erros)): ?>
     <div class="alert alert-error">
         <span class="alert-icon">✗</span>
         <div>
@@ -95,6 +114,7 @@ if (empty($erros)) {
         </div>
     </div>
     <a href="editar.php?id=<?= urlencode((string)$id) ?>" class="btn-secondary">← Voltar e corrigir</a>
+<?php endif; ?>
 
 </body>
 </html>
