@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "nome": "ureia",
+        "descricao": "aa",
+        "categoria": "Fertilizante",
+        "ncm": "12345678",
+        "preco": 33,
+        "estoque": 12,
+        "unidade": "T",
+        "ativo": "1",
+        "data_cadastro": "27\/04\/2026 00:24"
+    }
+]
