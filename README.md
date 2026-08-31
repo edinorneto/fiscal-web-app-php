@@ -7,8 +7,8 @@
 ## 🖼️ Screenshots
 
 ![Menu principal](screenshots/menu.png)
-![Resultado da consulta](screenshots/output.png)
-![Lista de produtos](screenshots/stash.png)
+![Resultado da consulta](screenshots/output.PNG)
+![Lista de produtos](screenshots/stash.PNG)
 
 ---
 
