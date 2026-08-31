@@ -4,6 +4,14 @@
 
 ---
 
+## 🖼️ Screenshots
+
+![Menu principal](screenshots/menu.png)
+![Resultado da consulta](screenshots/output.png)
+![Lista de produtos](screenshots/stash.png)
+
+---
+
 ## 🔗 Context: Evolution of a Python CLI Project
 
 This project is the **web evolution** of a previous terminal-based Python solution:
@@ -47,7 +55,9 @@ A PHP 8.x web application for product registration and fiscal consultation orien
 ├── config.php              # Global constants (JSON path, settings)
 ├── data.php                # Isolated read/write functions for JSON persistence
 ├── style.css               # Full design system (dark fintech theme, no frameworks)
-├── cadastro_produtos.json  # Persistent product database (auto-generated)
+├── .gitattributes          # Forces GitHub to recognize PHP as primary language
+├── .gitignore              # Excludes JSON database and auto-generated backup files
+├── cadastro_produtos.json  # Persistent product database (auto-generated, gitignored)
 └── screenshots/            # Visual documentation
 ```
 
@@ -60,6 +70,8 @@ A PHP 8.x web application for product registration and fiscal consultation orien
 **Isolated data layer:** `data.php` is the only file that reads or writes to `cadastro_produtos.json`. No other file touches persistence directly — any change to the storage format is contained in a single place.
 
 **Rule engine as data:** `tax_rules.php` exposes an associative array keyed by `[regime][region]`. Adding a new fiscal rule means extending the array without modifying the consultation logic — open for extension, closed for modification.
+
+**Safe file writes:** `data.php` uses `tempnam` + `rename` for atomic writes, `flock` for concurrent read/write safety, and auto-generates timestamped backups before each save — preventing data loss without a database.
 
 ---
 
@@ -112,6 +124,8 @@ php -S localhost:8000
 
 Open `http://localhost:8000` in your browser.
 
+> The `cadastro_produtos.json` file is created automatically on the first product registration. No setup or migration needed.
+
 ---
 
 ## 🧪 Example Flow
@@ -135,7 +149,7 @@ ICMS: 6,0%  |  IPI: 0%  |  PIS: 0%  |  COFINS: 0%
 
 ## 🧠 Concepts Applied
 
-`PHP 8.x` · `HTML5` · `CSS3` · `CRUD Design` · `Rule Engine` · `Multi-file Architecture` · `Separation of Concerns` · `Process-per-action Pattern` · `JSON Persistence` · `Null Coalescing ??` · `Git & GitHub`
+`PHP 8.x` · `HTML5` · `CSS3` · `CRUD Design` · `Rule Engine` · `Multi-file Architecture` · `Separation of Concerns` · `Process-per-action Pattern` · `JSON Persistence` · `File Locking (flock)` · `Atomic Writes (tempnam + rename)` · `Defensive Programming` · `Input Validation` · `Null Coalescing ??` · `Git & GitHub`
 
 ---
 
